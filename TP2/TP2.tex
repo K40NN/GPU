@@ -1,0 +1,142 @@
+\documentclass[11pt]{paper}
+
+\usepackage[T1]{fontenc}
+
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    filecolor=magenta,
+    urlcolor=cyan,
+    pdfpagemode=FullScreen,
+    }
+\urlstyle{same}
+
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsmath}
+
+\usepackage{a4wide,color}
+\usepackage{xspace}
+\usepackage{anysize}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{color}
+\usepackage{float}
+
+\usepackage{lscape}
+
+\usepackage{listings}
+
+
+
+
+
+\title{{\Large Programmation sur Processeur Graphique -- GPGPU }\\
+\vspace{-0.4em}
+{\large TP : cuBLAS}\\
+{\small Centrale Nantes}\\
+\small P.-E. Hladik, \small{\texttt{pehladik@ec-nantes.fr}}\\
+---\\
+{\scriptsize  Version bêta (\today)}\\
+}
+
+
+\begin{document}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+  \section{Objectifs}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Dans ce TP vous allez utiliser une bibliothèque d'algèbre linéaire écrite en CUDA. Le but est de remplacer dans le code de votre réseau de neurones les appels aux fonctions linéaire par les fonctions déjà implémentée dans la biliothèque.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+  \section{BLAS et cuBLAS}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+BLAS (Basic Linear Algebra Subprograms) est une bibliothèque d'algèbre linéaire de bas niveau, écrite à l'origine en Fortran et normalisée par le BLAS Technical Forum. Elle fournit trois niveaux de routines :
+\begin{itemize}
+	\item  Niveau 1 : Opérations scalaires et vectorielles. Exemple : Produit scalaire et SAXPY
+	\item  Niveau 2 : Opérations matricielles et vectorielles. Exemple : Multiplication vectorielle matricielle, résolution d'un système triangulaire
+	\item  Niveau 3 : Opérations matricielles-matricielles. Exemple : GEMM
+\end{itemize}
+
+La bibliothèque cuBLAS est une implémentation de BLAS pour les périphériques CUDA. La documentation est disponible en ligne \href{https://docs.nvidia.com/cuda/cublas/}{https://docs.nvidia.com/cuda/cublas/}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{Contexte d'exécution}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+La bibliothèque cuBLAS a besoin d'un contexte d'exécution pour stocker les ressources internes. Ce contexte doit être créé avant l'exécution de toute routine cuBLAS :
+\begin{itemize}
+	\item {\tt cublasHandle\_t} : type utilisé par cuBLAS pour stocker les contextes.
+	\item {\tt cublasCreate(cublasHandle\_t* handle)} : crée un contexte cuBLAS avec comme paramètres le pointeur vers le handle cuBLAS à créer
+\end{itemize}
+
+Après que toutes les exécutions de cuBLAS soient terminées, le contexte doit être détruit pour libérer les ressources. La création et la destruction des contextes doivent être considérées comme une opération coûteuse. Il est recommandé que chaque thread et chaque périphérique ait son propre contexte.
+Pour créer un contexte dans un périphérique spécifique, appelez {\tt cudaSetDevice} avant la création.
+\begin{itemize}
+	\item {\tt cublasDestroy(cublasHandle\_t handle)} : détruit un contexte cuBLAS avec comme paramètre un pointeur sur le handle cuBLAS avec le contexte à détruire
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{Convention de dénomination de l'API cuBLAS pour les routines BLAS}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Chacun des trois niveaux de routines BLAS dans cuBLAS a plusieurs interfaces pour la même opération, ayant la convention de nommage :
+{\tt cublas<t>opération} où {\tt <t>} est une de :
+\begin{itemize}
+	\item {\tt S} pour les paramètres flottants
+	\item {\tt D} pour les paramètres doubles
+	\item {\tt C} pour les paramètres complexes de flottants
+	\item {\tt Z} pour les paramètres doubles complexes
+\end{itemize}
+Exemple : Pour l'opération axpy (A X Plus Y, $y[i] = a.x[i] + y[i]$), les fonctions disponibles sont {\tt cublasSaxpy}, {\tt cublasDaxpy}, {\tt cublasCaxpy}, {\tt cublasZaxpy}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{API mémoire cuBLAS}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+La bibliothèque cuBLAS offre des fonctions spécialisées de migration et de copie de données pour les transferts de matrices et de vecteurs :
+\begin{itemize}
+	\item {\tt cublasGetVector} et {\tt cudaGetMatrix} pour les transferts du device à l'hôte
+	\item {\tt cublasSetVector} et {\tt cudaSetMatrix} pour les transferts de l'hôte au device
+	\item {\tt cublas<t>copy} pour les transferts de device à device
+\end{itemize}
+Utile pour obtenir une ligne dans une matrice avec un ordre majeur de colonne
+
+{\bf La bibliothèque cuBLAS utilise l'ordre majeur des colonnes avec l'indexation 1 pour la compatibilité avec les bibliothèques numériques Fortran.}
+
+Utilisation de {\tt cublasGetVector()} avec comme paramètres :
+\begin{itemize}
+	\item Le nombre d'éléments à transférer en octets
+	\item La taille des éléments en octets
+	\item Un pointeur sur la source du device
+	\item Un {\it stride} (pas) utilisé pour décaler la lecture (Utile pour obtenir une ligne dans une matrice avec un ordre majeur de colonne)
+	\item Un pointeur vers la destination sur l'hôte
+	\item Un pas pour le vecteur de destination
+\end{itemize}
+Par exemple pour une matrice {\tt A} $2 \times 2$, {\tt cublasGetVector(2*sizeof(float), sizeof(float), A, 2, y, 1)} copie la ligne 0 de {\tt A} dans le vecteur {\tt y}.
+
+Des exemples de code sont fournis dans la documentation \href{https://docs.nvidia.com/cuda/cublas/index.html#example-code}{https://docs.nvidia.com/cuda/cublas/index.html\#example-code}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+  \subsection{Utilisation et compilation}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Pour utiliser la bibliothèque cuBLAS, il est nécessaire d'ajouter le fichier d'entête {\tt cublas\_v2.h} dans les fichiers de code et l'option {\tt -lcublas} lors de la compilation avec {\tt nvcc}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+  \section{Travail à réaliser et à rendre}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Utiliser la bibliothèque cuBLAS pour implémenter votre réseau de neurones artificiels. Au choix, vous pouvez repartir du code initial proposé ou bien du code que vous avez produit lors de la dernière séance de TP.
+
+A la fin de la séance, vous devrez rendre le code que vous avez réalisé ainsi qu'un petit rapport dans lequel vous évaluez les performances obtenues.
+
+\end{document}
