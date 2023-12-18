@@ -53,7 +53,7 @@
   \section{Travail à réaliser}
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-La partie pratique va vous permettre d'appliquer les concepts de parallélisme des données et de programmation en CUDA à un code plus important que ceux des travaux dirigés. 
+La partie pratique va vous permettre d'appliquer les concepts vus en cours et travaux dirigés sur le parallélisme des données et la programmation en CUDA, à un code plus important. 
 %Cela peut prendre plusieurs formes, notamment
 %- Analyse approfondie des performances et amélioration du code ou des architectures GPU existantes.
 %- Implémenter une version GPU d'un code CPU existant à forte intensité de calcul.
@@ -61,21 +61,24 @@ La partie pratique va vous permettre d'appliquer les concepts de parallélisme d
 %- Faire de nouvelles recherches sur les GPU
 L'objectif final est de démontrer une maîtrise de la programmation sur GPU et de la conception pour des données parallèles.
 
-Pour cela, vous allez programmer de zéro (un code séquentiel vous est fourni comme exemple) un réseau de neurones artificiels et chercher à optimiser sa vitesse de calcul sur GPU.
+Vous avez le droit de proposer la méthode que vous voulez (utilisation de librairies existantes comme cuBLAST, réécriture complète du code, etc.). Si vous souhaitez aussi explorer d'autres langage ou bibliothèque comme \href{https://numba.readthedocs.io/en/stable/}{Numba} c'est tout à fait possible, mais ça demandera du travail.\bigskip
+
+Pour illustrer votre savoir faire, vous allez programmer de zéro (un code séquentiel en C vous est quand même fourni comme exemple) un réseau de neurones artificiels et chercher à optimiser sa vitesse de calcul sur GPU.
 Pour réaliser cela, vous devrez :
 \begin{itemize}
-	\item déterminez quelle partie de l'application prend du temps,
-	\item déterminez une ou plusieurs approches pour prendre en considération le parallèlisme,
-	\item réalisez plusieurs implémentations de l'approche,
-	\item mesurez les performances d'exécution des implémentations pour divers paramètres,
-	\item reliez les résultats aux concepts du cours.\medskip
+	\item commencer par déterminer quelle partie de l'application prend du temps (faites des mesures sur le code proposé),
+	\item déterminer une ou plusieurs approches pour prendre en considération le parallélisme,
+	\item réaliser plusieurs implémentations de l'approche,
+	\item mesurer les performances d'exécution des implémentations pour divers paramètres,
+	\item montrer le lien entre les résultats que vous obtenez et les concepts du cours.\bigskip
 \end{itemize}
 
 A la fin des séances de TP vous devrez rendre votre code ainsi qu'un rapport comprenant les éléments suivants :
 \begin{itemize}
-	\item une explication de la structure du code séquentiel,
-	\item une explication et justification pour chacune des optimisations que vous avez réalisées,
-	\item une évaluation des performances de vos optimisations.\medskip
+	\item une explication de la structure du code séquentiel (avec les mesures de performances),
+	\item une description rapide de l'approche que vous avez suivie,
+	\item des explications pour chacune des optimisations que vous avez réalisées,
+	\item des évaluations des performances de vos optimisations.\medskip
 \end{itemize}
 
 La notation prendra en considération les éléments suivants :
@@ -195,6 +198,8 @@ L'algorithme est testé avec le dataset de MNIST en considérant que :
 	\item la fonction d'activation est la fonction sigmoïde: $f(x) = \frac{1}{1+e^{-x}}$  et $f'(x) = f(x)(1-f(x))$ 
 	\item la vitesse d'apprentissage $\alpha$ est de $0.05$
 \end{itemize}
+
+Si vous souhaitez changer ces paramètres vous pouvez le faire (par exemple en augmentant le nombre de couches, la taille du réseau, etc.), mais indiquez le clairement dans votre rapport.
 
 
 \end{document}
