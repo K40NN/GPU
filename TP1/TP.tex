@@ -37,11 +37,11 @@
 
 \title{{\Large Programmation sur Processeur Graphique -- GPGPU }\\
 \vspace{-0.4em}
-{\large TP : réseau de neuronnes}\\
+{\large Micro-Projet : réseau de neuronnes}\\
 {\small Centrale Nantes}\\
 \small P.-E. Hladik, \small{\texttt{pehladik@ec-nantes.fr}}\\
 ---\\
-{\scriptsize  Version bêta (\today)}\\
+{\scriptsize  Version 1.0.1 (\today)}\\
 }
 
 
@@ -50,66 +50,76 @@
 \maketitle
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
-  \section{Travail à réaliser}
+  \section*{Travail à réaliser}
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-La partie pratique va vous permettre d'appliquer les concepts vus en cours et travaux dirigés sur le parallélisme des données et la programmation en CUDA, à un code plus important. 
-%Cela peut prendre plusieurs formes, notamment
-%- Analyse approfondie des performances et amélioration du code ou des architectures GPU existantes.
-%- Implémenter une version GPU d'un code CPU existant à forte intensité de calcul.
-%- Reproduire un travail de recherche existant sur les GPU
-%- Faire de nouvelles recherches sur les GPU
-L'objectif final est de démontrer une maîtrise de la programmation sur GPU et de la conception pour des données parallèles.
+Ce micro-projet vous permettra de mettre en pratique les concepts abordés en cours et en travaux dirigés sur le parallélisme des données et la programmation en CUDA.
 
-Vous avez le droit de proposer la méthode que vous voulez (utilisation de librairies existantes comme cuBLAST, réécriture complète du code, etc.). Si vous souhaitez aussi explorer d'autres langage ou bibliothèque comme \href{https://numba.readthedocs.io/en/stable/}{Numba} c'est tout à fait possible, mais ça demandera du travail.\bigskip
+L'objectif est de démontrer votre maîtrise de la programmation sur GPU ainsi que votre capacité à concevoir des traitements adaptés aux données parallèles.
 
-Pour illustrer votre savoir faire, vous allez programmer de zéro (un code séquentiel en C vous est quand même fourni comme exemple) un réseau de neurones artificiels et chercher à optimiser sa vitesse de calcul sur GPU.
-Pour réaliser cela, vous devrez :
+Vous êtes libres de choisir la méthode qui vous convient, que ce soit en utilisant des bibliothèques existantes comme cuBLAS, en réécrivant entièrement le code, ou toute autre approche pertinente. Si vous souhaitez explorer d'autres langages ou bibliothèques, comme \href{https://numba.readthedocs.io/en/stable/}{Numba}, c'est tout à fait possible et nous pourrons en discuter au début du projet.\medskip
+
+Pour mettre en avant votre savoir-faire, vous programmerez un réseau de neurones artificiels à partir de zéro. Un code séquentiel en C vous est tout de même fourni comme base de travail. Votre objectif sera d’optimiser la vitesse de calcul sur GPU.
+\medskip
+
+Pour cela, vous devrez :
 \begin{itemize}
-	\item commencer par déterminer quelle partie de l'application prend du temps (faites des mesures sur le code proposé),
-	\item déterminer une ou plusieurs approches pour prendre en considération le parallélisme,
-	\item réaliser plusieurs implémentations de l'approche,
-	\item mesurer les performances d'exécution des implémentations pour divers paramètres,
-	\item montrer le lien entre les résultats que vous obtenez et les concepts du cours.\bigskip
+	\item Identifier les parties de l’application les plus consommatrices en temps en effectuant des mesures sur le code fourni.
+	\item Déterminer une ou plusieurs approches exploitant le parallélisme.
+	\item Implémenter ces approches sous différentes variantes.
+	\item Mesurer les performances des implémentations en fonction de divers paramètres.
+	\item Analyser les résultats obtenus et les mettre en lien avec les concepts vus en cours.
 \end{itemize}
+\medskip
 
-A la fin des séances de TP vous devrez rendre votre code ainsi qu'un rapport comprenant les éléments suivants :
+%%%%%%%%%%%%%%%%%%%%%%%%%
+  \section*{Rendu attendu}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+À la fin des séances, vous devrez déposer sur Hippocampus une archive ZIP contenant votre code, ainsi qu’un rapport au format PDF incluant les éléments suivants :
 \begin{itemize}
-	\item une explication de la structure du code séquentiel (avec les mesures de performances),
-	\item une description rapide de l'approche que vous avez suivie,
-	\item des explications pour chacune des optimisations que vous avez réalisées,
-	\item des évaluations des performances de vos optimisations.\medskip
+	\item Une explication de la structure du code séquentiel, accompagnée des mesures de performances.
+	\item Une description concise de l’approche que vous avez suivie.
+	\item Une explication détaillée des optimisations mises en place.
+	\item Une évaluation des performances obtenues grâce à ces optimisations.
 \end{itemize}
+\medskip
 
-La notation prendra en considération les éléments suivants :
+{\bf Vous devrez présenter chaque étape de votre travail en expliquant votre démarche et les choix qui l’ont guidée.} N’hésitez pas à inclure également les tentatives qui n’ont pas abouti à de bonnes performances, en analysant les raisons de ces résultats.
+\medskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Critères d'évaluation}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+L’évaluation prendra en compte les éléments suivants :
 \begin{itemize}
 	\item Démonstration des performances obtenues
 	\begin{itemize}
-		\item Produit des résultats corrects
-		\item Réalise une bonne accélération par rapport au code de base
-		\item Compare plusieurs optimisations
+		\item Les résultats produits ont été testés et sont corrects.
+		\item L’accélération obtenue par rapport au code de base est significative (ou bien les contre-performances sont expliquées).
+		\item Plusieurs optimisations ont été explorées et comparées.
 	\end{itemize}
 
-	\item Rapport
+	\item Qualité du rapport
 	\begin{itemize}
-		\item Couvre bien toutes les sections requises 
-		\item Est techniquement solide
-		\item Est clair, organisé et bien écrit
-		\item Propose une analyse approfondie du problème, de l'approche et des résultats
+		\item Le contenu est techniquement solide.
+		\item Le rapport est clair, bien structuré et bien rédigé.
+		\item L’analyse du problème, de l’approche et des résultats est approfondie.
 	\end{itemize}
 	
 	\item Qualité du code
 	\begin{itemize}
-		\item Le  style de codage est soigné
-		\item Le code est bien documenté 
+		\item Le  style de codage est soigné.
+		\item Le code est bien documenté .
 	\end{itemize}
 \end{itemize}
 
-Bien que le rapport ne représente qu'une partie de votre note, il est essentiel qu'il soit bien fait pour valider la partie réalisation. Par exemple, si vous avez appliqué une optimisation intéressante, il est essentiel que vous l'expliquiez bien dans votre rapport.
+Bien que le rapport ne représente qu’une partie de la note, il est essentiel pour valider la réalisation du projet. Par exemple, si vous avez mis en place une optimisation intéressante, elle doit être clairement expliquée dans votre rapport pour être prise en compte.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
-  \section{Cas d'étude : réseau de neurones artificiels}
+  \section*{Cas d'étude : réseau de neurones artificiels}
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 Un réseau de neurones artificiel est constitué de différentes couches (layers) de neurones. On note $L$ le nombre de couches avec 0 pour désigner la couche d'entrée.
@@ -174,21 +184,22 @@ En utilisant ceci, nous pouvons calculer la matrice d'entrée $a^{(0)}$ pour le 
 À la fin d'une epoch, nous devons tester la précision du réseau formé. Pour chaque exemple des données de test, calculez la réponse du réseau en appelant le calcul de propagation puis en prenant l'indice du neurone avec la plus grande activation dans la couche de sortie. En comparant cette réponse à l'étiquette attendue donnée par les données, on peut compter le nombre d'erreurs ou de réussites. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
-  \section{Dataset MNIST}
+  \section*{Dataset MNIST}
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-Pour valider le programme, vous utiliserez un exemple classique de reconnaissance de digits dont les dataset sont disponibles sur \href{http://yann.lecun.com/exdb/mnist/}{http://yann.lecun.com/exdb/mnist/} et sur hippocampus.
+Pour valider le programme, vous utiliserez un exemple classique de reconnaissance de digits dont les dataset sont disponibles sur hippocampus.
 
 Le dataset comprend 60 000 données étiquetées. Une donnée est une image de $28\times28$ pixels et les étiquettes sont un digit (0 à 9) associé à la donnée. Un ensemble de 10 000 données de validation sont aussi fournies dans le même format.
 
-Les données ne sont pas normalisées, et il faut les ramener leur valeur entre 0,0 (noir) et 1,0 (blanc), plutôt qu'entre 0 et 255.
+Les données ne sont pas normalisées, et il faut les ramener leur valeur entre 0,0 (noir) et 1,0 (blanc), plutôt qu'entre 0 et 255 (le code est déjà fourni).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
-  \section{Code fourni}
+  \section*{Code fourni}
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-Afin de vous aider vous trouverez sur hippocampus les jeux de données étiquetées ainsi qu'un code C séquentiel réalisant l'ensemble des traitements pour l'exmple MNIST. Vous pouvez partir de ce code pour optimiser les calculs et commencer à écrire les parties à porter sur le GPU.
+Afin de vous aider vous trouverez sur hippocampus les jeux de données étiquetées ainsi que dans le dépôt un code C séquentiel réalisant l'ensemble des traitements pour l'exemple MNIST. Vous pouvez partir de ce code pour optimiser les calculs et commencer à écrire les parties à porter sur le GPU.
+\medskip
 
 L'algorithme est testé avec le dataset de MNIST en considérant que :
 \begin{itemize}
