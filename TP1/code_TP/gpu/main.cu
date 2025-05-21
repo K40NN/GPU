@@ -10,6 +10,43 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
+#include "gpu_memory.h"
+
+void init_gpu_memory(gpu_memory_t *gpu_mem) {
+    // Allocate memory for layer 1
+    cudaMalloc((void **)&gpu_mem->device_weights1, 188160 * sizeof(double));
+    cudaMalloc((void **)&gpu_mem->device_activations1, 100352 * sizeof(double));
+    cudaMalloc((void **)&gpu_mem->device_z1, 3840 * sizeof(double));
+    cudaMalloc((void **)&gpu_mem->device_biases1, 240 * sizeof(double));
+    cudaMalloc((void **)&gpu_mem->device_one1, 128 * sizeof(double));
+    cudaMalloc((void **)&gpu_mem->device_z2, 3840 * sizeof(double));
+
+    // Allocate memory for layer 2
+    cudaMalloc((void **)&gpu_mem->device_weights2, 2400 * sizeof(double));
+    cudaMalloc((void **)&gpu_mem->device_activations2, 3840 * sizeof(double));
+    cudaMalloc((void **)&gpu_mem->device_z1_2, 1280 * sizeof(double));
+    cudaMalloc((void **)&gpu_mem->device_biases2, 80 * sizeof(double));
+    cudaMalloc((void **)&gpu_mem->device_one2, 128 * sizeof(double));
+    cudaMalloc((void **)&gpu_mem->device_z2_2, 1280 * sizeof(double));
+}
+
+void free_gpu_memory(gpu_memory_t *gpu_mem) {
+    // Free memory for layer 1
+    cudaFree(gpu_mem->device_weights1);
+    cudaFree(gpu_mem->device_activations1);
+    cudaFree(gpu_mem->device_z1);
+    cudaFree(gpu_mem->device_biases1);
+    cudaFree(gpu_mem->device_one1);
+    cudaFree(gpu_mem->device_z2);
+
+    // Free memory for layer 2
+    cudaFree(gpu_mem->device_weights2);
+    cudaFree(gpu_mem->device_activations2);
+    cudaFree(gpu_mem->device_z1_2);
+    cudaFree(gpu_mem->device_biases2);
+    cudaFree(gpu_mem->device_one2);
+    cudaFree(gpu_mem->device_z2_2);
+}
 
 void populate_minibatch(double *x, double* y, unsigned* minibatch_idx, unsigned minibatch_size, image * img, unsigned img_size, byte* label, unsigned label_size);
 
@@ -105,6 +142,12 @@ void populate_minibatch(double * x, double * y, unsigned * minibatch_idx, unsign
 int main(int argc, char *argv[])
 {
     srand(time(0));
+
+    gpu_memory_t gpu_mem;
+
+    // Initialize GPU memory
+    init_gpu_memory(&gpu_mem);
+
     unsigned datasize, ntest;
     image* train_img = read_images("../mnist/train-images-idx3-ubyte", &datasize);
     byte* train_label = read_labels("../mnist/train-labels-idx1-ubyte", &datasize);
@@ -136,9 +179,9 @@ int main(int argc, char *argv[])
         {
             populate_minibatch(x, y, shuffled_idx+i, minibatch_size, train_img, 28*28, train_label, 10);
             memcpy(nn->layers[0]->activations->m, x, 28 * 28 * minibatch_size * sizeof(double));
-            forward(nn, sigmoid);
+            forward(nn, sigmoid, &gpu_mem);
             memcpy(out->m, y, 10 * minibatch_size * sizeof(double));            
-            backward(nn, out, dsigmoid);            
+            backward(nn, out, dsigmoid, &gpu_mem);            
         }     
         printf("epoch %d accuracy %lf\n", epoch, accuracy(test_img, test_label, ntest, minibatch_size, nn));
     }
@@ -147,6 +190,9 @@ int main(int argc, char *argv[])
     free(y);
     free(shuffled_idx);
     destroy_matrix(out);   
+
+    // Free GPU memory
+    free_gpu_memory(&gpu_mem);
     
     return 0;
 }
