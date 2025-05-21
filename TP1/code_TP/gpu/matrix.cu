@@ -102,18 +102,10 @@ __global__ void computeMatrixMulGPU(double *A, double *B, double *C, int numARow
     }
 }
 
-void matrix_dot(matrix_t *m1, matrix_t *m2, matrix_t *res)
-{
+void matrix_dot(matrix_t *m1, matrix_t *m2, matrix_t *res, double *deviceA, double *deviceB, double *deviceC) {
     assert((m1->columns == m2->rows) &&
            (m1->rows == res->rows) &&
            (m2->columns == res->columns));
-
-    double *deviceA, *deviceB, *deviceC;
-
-    // Allocate memory on the GPU
-    cudaMalloc((void **)&deviceA, m1->rows * m1->columns * sizeof(double));
-    cudaMalloc((void **)&deviceB, m2->rows * m2->columns * sizeof(double));
-    cudaMalloc((void **)&deviceC, res->rows * res->columns * sizeof(double));
 
     // Copy data from host to device
     cudaMemcpy(deviceA, m1->m, m1->rows * m1->columns * sizeof(double), cudaMemcpyHostToDevice);
@@ -128,11 +120,6 @@ void matrix_dot(matrix_t *m1, matrix_t *m2, matrix_t *res)
 
     // Copy the result back to the host
     cudaMemcpy(res->m, deviceC, res->rows * res->columns * sizeof(double), cudaMemcpyDeviceToHost);
-
-    // Free GPU memory
-    cudaFree(deviceA);
-    cudaFree(deviceB);
-    cudaFree(deviceC);
 }
 
 void matrix_function(matrix_t *m1, double (*f)(double), matrix_t *res)

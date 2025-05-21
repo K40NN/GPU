@@ -1,5 +1,6 @@
 #include "ann.h"
 #include "matrix.h"
+#include "gpu_memory.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -117,19 +118,27 @@ void print_nn(ann_t *nn)
     }
 }
 
-void forward(ann_t *nn, double (*activation_function)(double))
-{
+void forward(ann_t *nn, double (*activation_function)(double), gpu_memory_t *gpu_mem) {
     long long int size_memory = 0;
     long long int size_memory_by_layer = 0;
-    for (int l = 1; l < nn->number_of_layers; l++)
-    {
+    for (int l = 1; l < nn->number_of_layers; l++) {
         matrix_t *z1 = alloc_matrix(nn->layers[l]->number_of_neurons, nn->minibatch_size);
         matrix_t *z2 = alloc_matrix(nn->layers[l]->number_of_neurons, nn->minibatch_size);
         matrix_t *one = alloc_matrix(1, nn->minibatch_size);
         for (int idx = 0; idx < one->columns*one->rows; idx++)
             one->m[idx] = 1.0;
-        matrix_dot(nn->layers[l]->weights, nn->layers[l-1]->activations, z1); // z1 <- w^l x a^(l-1)
-        matrix_dot(nn->layers[l]->biases, one, z2); // z2 <- b^l x 1        
+
+        if (l == 1) {
+            matrix_dot(nn->layers[l]->weights, nn->layers[l-1]->activations, z1,
+                       gpu_mem->device_weights1, gpu_mem->device_activations1, gpu_mem->device_z1);
+            matrix_dot(nn->layers[l]->biases, one, z2,
+                       gpu_mem->device_biases1, gpu_mem->device_one1, gpu_mem->device_z2);
+        } else {
+            matrix_dot(nn->layers[l]->weights, nn->layers[l-1]->activations, z1,
+                       gpu_mem->device_weights2, gpu_mem->device_activations2, gpu_mem->device_z1_2);
+            matrix_dot(nn->layers[l]->biases, one, z2,
+                       gpu_mem->device_biases2, gpu_mem->device_one2, gpu_mem->device_z2_2);
+        }
 
         printf("taille du tab weights  a la couche %d  : %lu \n", l, nn->layers[l]->weights->size);
         printf("taille du tab activations  a la couche %d  : %lu \n", l, nn->layers[l-1]->activations->size);
@@ -152,8 +161,7 @@ void forward(ann_t *nn, double (*activation_function)(double))
     printf("taille de la memoire total : %lld \n", size_memory);
 }
 
-void backward(ann_t *nn, matrix_t *y, double (*derivative_actfunct)(double))
-{
+void backward(ann_t *nn, matrix_t *y, double (*derivative_actfunct)(double), gpu_memory_t *gpu_mem) {
     unsigned L = nn->number_of_layers-1;
 
     matrix_t *dfzL = alloc_matrix(nn->layers[L]->number_of_neurons, nn->minibatch_size);
@@ -164,15 +172,22 @@ void backward(ann_t *nn, matrix_t *y, double (*derivative_actfunct)(double))
 
     destroy_matrix(dfzL);
 
-    for (int l = L; l > 1; l--)
-    {
+    for (int l = L; l > 1; l--) {
         matrix_t *tw, *delta_tmp, *dfz;
         tw = alloc_matrix(nn->layers[l-1]->number_of_neurons, nn->layers[l]->number_of_neurons);
         delta_tmp = alloc_matrix(nn->layers[l-1]->number_of_neurons, nn->minibatch_size);
         dfz = alloc_matrix(nn->layers[l-1]->number_of_neurons, nn->minibatch_size);
 
         matrix_transpose(nn->layers[l]->weights, tw); // (w^l)T        
-        matrix_dot(tw, nn->layers[l]->delta, delta_tmp); // (w^l)T x delta^l
+
+        if (l == 2) {
+            matrix_dot(tw, nn->layers[l]->delta, delta_tmp,
+                       gpu_mem->device_weights2, gpu_mem->device_z1_2, gpu_mem->device_activations2);
+        } else {
+            matrix_dot(tw, nn->layers[l]->delta, delta_tmp,
+                       gpu_mem->device_weights1, gpu_mem->device_z1, gpu_mem->device_activations1);
+        }
+
         matrix_function(nn->layers[l-1]->z, derivative_actfunct, dfz); // f'(z^(l-1))
         hadamard_product(delta_tmp, dfz, nn->layers[l-1]->delta); // delta^(l-1) = (w^l)T x delta^l o f'(z^(l-1))
 
@@ -181,8 +196,7 @@ void backward(ann_t *nn, matrix_t *y, double (*derivative_actfunct)(double))
         destroy_matrix(dfz);
     }
 
-    for (int l = 1; l < nn->number_of_layers; l++)
-    {
+    for (int l = 1; l < nn->number_of_layers; l++) {
         matrix_t *w1, *ta;
         w1 = alloc_matrix(nn->layers[l]->number_of_neurons, nn->layers[l-1]->number_of_neurons);
         ta = alloc_matrix(nn->minibatch_size, nn->layers[l-1]->number_of_neurons);
