@@ -1,0 +1,4 @@
+starting accuracy 11.330000
+start learning epoch 0
+epoch 0 accuracy 76.770000
+======== Warning: The path to cupti library might not be set in LD_LIBRARY_PATH. By default, it is installed in /usr/local/<cuda-toolkit>/extras/CUPTI/lib64 or /usr/local/<cuda-toolkit>/targets/<arch>/lib.======== Warning: No CUDA application was profiled, exiting
