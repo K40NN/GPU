@@ -18,6 +18,11 @@ typedef struct {
     double *device_one2;
     double *device_z2_2;
 
+    //Train Data
+ 
+    double *device_x;
+    double *device_y;
+
 } gpu_memory_t;
 
 #endif

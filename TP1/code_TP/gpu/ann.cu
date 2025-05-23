@@ -140,16 +140,18 @@ void forward(ann_t *nn, double (*activation_function)(double), gpu_memory_t *gpu
                        gpu_mem->device_biases2, gpu_mem->device_one2, gpu_mem->device_z2_2);
         }
 
-        printf("taille du tab weights  a la couche %d  : %lu \n", l, nn->layers[l]->weights->size);
-        printf("taille du tab activations  a la couche %d  : %lu \n", l, nn->layers[l-1]->activations->size);
-        printf("taille du tab z1  a la couche %d  : %lu \n", l, z1->size);
-        printf("taille du tab biases  a la couche %d  : %lu \n", l, nn->layers[l]->biases->size);
-        printf("taille du tab one  a la couche %d  : %lu \n", l, one->size);
-        printf("taille du tab z2  a la couche %d  : %lu \n", l, z2->size);
-        size_memory += nn->layers[l]->weights->size + nn->layers[l-1]->activations->size + z1->size + nn->layers[l]->biases->size + one->size + z2->size;
-        size_memory_by_layer +=  nn->layers[l]->weights->size + nn->layers[l-1]->activations->size + z1->size + nn->layers[l]->biases->size + one->size + z2->size;
-        printf("taille de la memoire a la couche %d :  %lld \n", l, size_memory_by_layer);
-        size_memory_by_layer = 0;
+#ifdef DEBUG_PRINT
+            printf("taille du tab weights  a la couche %d  : %lu \n", l, nn->layers[l]->weights->size);
+            printf("taille du tab activations  a la couche %d  : %lu \n", l, nn->layers[l-1]->activations->size);
+            printf("taille du tab z1  a la couche %d  : %lu \n", l, z1->size);
+            printf("taille du tab biases  a la couche %d  : %lu \n", l, nn->layers[l]->biases->size);
+            printf("taille du tab one  a la couche %d  : %lu \n", l, one->size);
+            printf("taille du tab z2  a la couche %d  : %lu \n", l, z2->size);
+            size_memory += nn->layers[l]->weights->size + nn->layers[l-1]->activations->size + z1->size + nn->layers[l]->biases->size + one->size + z2->size;
+            size_memory_by_layer +=  nn->layers[l]->weights->size + nn->layers[l-1]->activations->size + z1->size + nn->layers[l]->biases->size + one->size + z2->size;
+            printf("taille de la memoire a la couche %d :  %lld \n", l, size_memory_by_layer);
+            size_memory_by_layer = 0;
+#endif
 
         matrix_sum(z1, z2, nn->layers[l]->z); // z^l <- z1 + z2 <=> z^l <- w^l x a^(l-1) + b^l x 1      
         matrix_function(nn->layers[l]->z, activation_function, nn->layers[l]->activations); // a^l = f(z^l)
@@ -158,7 +160,10 @@ void forward(ann_t *nn, double (*activation_function)(double), gpu_memory_t *gpu
         destroy_matrix(z2);
         destroy_matrix(one);
     }
-    printf("taille de la memoire total : %lld \n", size_memory);
+    #ifdef DEBUG_PRINT
+        printf("taille de la memoire total : %lld \n", size_memory);
+    #endif
+
 }
 
 void backward(ann_t *nn, matrix_t *y, double (*derivative_actfunct)(double), gpu_memory_t *gpu_mem) {
