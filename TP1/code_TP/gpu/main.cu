@@ -29,8 +29,8 @@ void init_gpu_memory(gpu_memory_t *gpu_mem) {
     CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_biases2, 80 * sizeof(double)));
     CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_one2, 128 * sizeof(double)));
     CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_z2_2, 1280 * sizeof(double)));
-    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_x, 28 * 28 * minibatch_size * sizeof(double)));
-    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_y, 10 * minibatch_size * sizeof(double)));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_x, 28 * 28 * 16 * sizeof(double)));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_y, 10 * 16 * sizeof(double)));
 
 }
 
