@@ -110,6 +110,13 @@ void matrix_dot(matrix_t *m1, matrix_t *m2, matrix_t *res, double *deviceA, doub
     // Copy data from host to device
     cudaMemcpy(deviceA, m1->m, m1->rows * m1->columns * sizeof(double), cudaMemcpyHostToDevice);
     cudaMemcpy(deviceB, m2->m, m2->rows * m2->columns * sizeof(double), cudaMemcpyHostToDevice);
+    
+    #ifdef DEBUG_PRINT
+    for (int i = 0; i < 3; i++)
+    {
+        printf("************ m1 : %lf , m2 :%lf*********\n",m1->m[i] , m2->m[i] );
+    }
+    #endif
 
     // Set up grid and block dimensions
     dim3 blockDim(16, 16);
@@ -120,6 +127,14 @@ void matrix_dot(matrix_t *m1, matrix_t *m2, matrix_t *res, double *deviceA, doub
 
     // Copy the result back to the host
     cudaMemcpy(res->m, deviceC, res->rows * res->columns * sizeof(double), cudaMemcpyDeviceToHost);
+
+    // #ifdef DEBUG_PRINT
+    for (int i = 0; i < 3; i++)
+    {
+        printf("************ res : %lf *********\n",res->m[i] );
+    }
+    // #endif
+
 }
 
 void matrix_function(matrix_t *m1, double (*f)(double), matrix_t *res)

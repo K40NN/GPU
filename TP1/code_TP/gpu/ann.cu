@@ -119,8 +119,10 @@ void print_nn(ann_t *nn)
 }
 
 void forward(ann_t *nn, double (*activation_function)(double), gpu_memory_t *gpu_mem) {
+#ifdef DEBUG_PRINT
     long long int size_memory = 0;
     long long int size_memory_by_layer = 0;
+#endif
     for (int l = 1; l < nn->number_of_layers; l++) {
         matrix_t *z1 = alloc_matrix(nn->layers[l]->number_of_neurons, nn->minibatch_size);
         matrix_t *z2 = alloc_matrix(nn->layers[l]->number_of_neurons, nn->minibatch_size);

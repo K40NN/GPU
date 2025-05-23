@@ -1,6 +1,6 @@
 #ifndef ANN_H
 #define ANN_H
-// #define DEBUG_PRINT
+#define DEBUG_PRINT
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
