@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include "matrix.h"
-
+#include "gpu_memory.h"
 typedef struct 
 {
     unsigned minibatch_size;
@@ -38,8 +38,8 @@ void set_input(ann_t *nn, matrix_t* input);
 
 void print_nn(ann_t *nn);
 
-void forward(ann_t *nn, double (*activation_function)(double));
+void forward(ann_t *nn, double (*activation_function)(double), gpu_memory_t *gpu_mem);
 
-void backward(ann_t *nn, matrix_t *y, double (*derivative_actfunct)(double));
+void backward(ann_t *nn, matrix_t *y, double (*derivative_actfunct)(double), gpu_memory_t *gpu_mem);
 
 #endif

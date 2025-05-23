@@ -11,23 +11,24 @@
 #include <string.h>
 #include <time.h>
 #include "gpu_memory.h"
+#include "error.h"
 
 void init_gpu_memory(gpu_memory_t *gpu_mem) {
     // Allocate memory for layer 1
-    cudaMalloc((void **)&gpu_mem->device_weights1, 188160 * sizeof(double));
-    cudaMalloc((void **)&gpu_mem->device_activations1, 100352 * sizeof(double));
-    cudaMalloc((void **)&gpu_mem->device_z1, 3840 * sizeof(double));
-    cudaMalloc((void **)&gpu_mem->device_biases1, 240 * sizeof(double));
-    cudaMalloc((void **)&gpu_mem->device_one1, 128 * sizeof(double));
-    cudaMalloc((void **)&gpu_mem->device_z2, 3840 * sizeof(double));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_weights1, 188160 * sizeof(double)));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_activations1, 100352 * sizeof(double)));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_z1, 3840 * sizeof(double)));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_biases1, 240 * sizeof(double)));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_one1, 128 * sizeof(double)));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_z2, 3840 * sizeof(double)));
 
     // Allocate memory for layer 2
-    cudaMalloc((void **)&gpu_mem->device_weights2, 2400 * sizeof(double));
-    cudaMalloc((void **)&gpu_mem->device_activations2, 3840 * sizeof(double));
-    cudaMalloc((void **)&gpu_mem->device_z1_2, 1280 * sizeof(double));
-    cudaMalloc((void **)&gpu_mem->device_biases2, 80 * sizeof(double));
-    cudaMalloc((void **)&gpu_mem->device_one2, 128 * sizeof(double));
-    cudaMalloc((void **)&gpu_mem->device_z2_2, 1280 * sizeof(double));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_weights2, 2400 * sizeof(double)));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_activations2, 3840 * sizeof(double)));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_z1_2, 1280 * sizeof(double)));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_biases2, 80 * sizeof(double)));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_one2, 128 * sizeof(double)));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_z2_2, 1280 * sizeof(double)));
 }
 
 void free_gpu_memory(gpu_memory_t *gpu_mem) {
@@ -81,7 +82,7 @@ double dsigmoid(double x)
     return sigmoid(x)*(1-sigmoid(x));
 }
 
-double accuracy(image* test_img, byte* test_label, unsigned datasize, unsigned minibatch_size, ann_t *nn)
+double accuracy(image* test_img, byte* test_label, unsigned datasize, unsigned minibatch_size, ann_t *nn, gpu_memory_t *gpu_mem)
 {
     unsigned good = 0;
     unsigned idx[datasize];    
@@ -94,8 +95,7 @@ double accuracy(image* test_img, byte* test_label, unsigned datasize, unsigned m
     {        
         populate_minibatch(x, y, &idx[i], minibatch_size, test_img, 28*28, test_label, 10);
         memcpy(nn->layers[0]->activations->m, x, 28*28 * minibatch_size * sizeof(double));     
-        
-        forward(nn, sigmoid);
+        forward(nn, sigmoid, gpu_mem);
         for (int col = 0; col < minibatch_size; col ++)
         {
             int idxTrainingData = col + i ;
@@ -162,7 +162,7 @@ int main(int argc, char *argv[])
     nn = create_ann(alpha, minibatch_size, number_of_layers, nneurons_per_layer);
     //print_nn(nn);
 
-    printf("starting accuracy %lf\n", accuracy(test_img, test_label, ntest, minibatch_size, nn));
+    printf("starting accuracy %lf\n", accuracy(test_img, test_label, ntest, minibatch_size, nn, &gpu_mem));
 
     unsigned *shuffled_idx = (unsigned *)malloc(datasize*sizeof(unsigned));
     double *x = (double *) malloc(28*28 * minibatch_size * sizeof( double ));
@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
             memcpy(out->m, y, 10 * minibatch_size * sizeof(double));            
             backward(nn, out, dsigmoid, &gpu_mem);            
         }     
-        printf("epoch %d accuracy %lf\n", epoch, accuracy(test_img, test_label, ntest, minibatch_size, nn));
+        printf("epoch %d accuracy %lf\n", epoch, accuracy(test_img, test_label, ntest, minibatch_size, nn, &gpu_mem));
     }
 
     free(x);

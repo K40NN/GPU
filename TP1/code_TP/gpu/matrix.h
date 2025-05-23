@@ -25,7 +25,7 @@ void matrix_sum(matrix_t *m1, matrix_t *m2, matrix_t *res);
 
 void matrix_minus(matrix_t *m1, matrix_t *m2, matrix_t *res);
 
-void matrix_dot(matrix_t *m1, matrix_t *m2, matrix_t *res);
+void matrix_dot(matrix_t *m1, matrix_t *m2, matrix_t *res, double *deviceA, double *deviceB, double *deviceC);
 
 void matrix_function(matrix_t *m1, double (*f)(double), matrix_t *res);
 
