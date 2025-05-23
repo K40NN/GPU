@@ -184,7 +184,7 @@ void backward(ann_t *nn, matrix_t *y, double (*derivative_actfunct)(double), gpu
             matrix_dot(tw, nn->layers[l]->delta, delta_tmp,
                        gpu_mem->device_weights2, gpu_mem->device_z1_2, gpu_mem->device_activations2);
         } else {
-            matrix_dot(tw, nn->layers[l]->delta, delta_tmp,
+            matrix_dot(tw, nn->layers[l]->delta,delta_tmp,
                        gpu_mem->device_weights1, gpu_mem->device_z1, gpu_mem->device_activations1);
         }
 
@@ -202,7 +202,7 @@ void backward(ann_t *nn, matrix_t *y, double (*derivative_actfunct)(double), gpu
         ta = alloc_matrix(nn->minibatch_size, nn->layers[l-1]->number_of_neurons);
         
         matrix_transpose(nn->layers[l-1]->activations, ta); // ta <- (a^(l-1))^T
-        matrix_dot(nn->layers[l]->delta, ta, w1); // w1 <- delta^l x (a^(l-1))^T
+        matrix_dot(nn->layers[l]->delta, ta, w1, gpu_mem->device_weights1, gpu_mem->device_z1, gpu_mem->device_activations1); // w1 <- delta^l x (a^(l-1))^T
         matrix_scalar(w1, nn->alpha / nn->minibatch_size, w1); // w1 <- alpha /m . delta^l x (a^(l-1))^T
         matrix_minus(nn->layers[l]->weights, w1, nn->layers[l]->weights); // w^l <- w^l - alpha /m . delta^l x (a^(l-1))^T
 
@@ -215,7 +215,7 @@ void backward(ann_t *nn, matrix_t *y, double (*derivative_actfunct)(double), gpu
         for (int idx = 0; idx < one->columns*one->rows; idx++)
             one->m[idx] = 1.0;
 
-        matrix_dot(nn->layers[l]->delta, one, b1); // b1 <- delta^l x 1^T
+        matrix_dot(nn->layers[l]->delta, one, b1, gpu_mem->device_weights1, gpu_mem->device_z1, gpu_mem->device_activations1); // b1 <- delta^l x 1^T
         matrix_scalar(b1,  nn->alpha / nn->minibatch_size, b1); // b1 <- alpha / m . delta^l x 1^T
         matrix_minus(nn->layers[l]->biases, b1, nn->layers[l]->biases); // b^l = b^l - alpha / m . delta^l x 1^T
         
