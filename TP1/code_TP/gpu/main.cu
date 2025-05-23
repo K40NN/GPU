@@ -29,6 +29,9 @@ void init_gpu_memory(gpu_memory_t *gpu_mem) {
     CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_biases2, 80 * sizeof(double)));
     CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_one2, 128 * sizeof(double)));
     CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_z2_2, 1280 * sizeof(double)));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_x, 28 * 28 * minibatch_size * sizeof(double)));
+    CHECK_ERROR(cudaMalloc((void **)&gpu_mem->device_y, 10 * minibatch_size * sizeof(double)));
+
 }
 
 void free_gpu_memory(gpu_memory_t *gpu_mem) {
@@ -47,6 +50,8 @@ void free_gpu_memory(gpu_memory_t *gpu_mem) {
     cudaFree(gpu_mem->device_biases2);
     cudaFree(gpu_mem->device_one2);
     cudaFree(gpu_mem->device_z2_2);
+    cudaFree(gpu_mem->device_x);
+    cudaFree(gpu_mem->device_y);
 }
 
 void populate_minibatch(double *x, double* y, unsigned* minibatch_idx, unsigned minibatch_size, image * img, unsigned img_size, byte* label, unsigned label_size);
@@ -178,6 +183,7 @@ int main(int argc, char *argv[])
         for (int i = 0; i < datasize - minibatch_size ; i+= minibatch_size)
         {
             populate_minibatch(x, y, shuffled_idx+i, minibatch_size, train_img, 28*28, train_label, 10);
+            // Copiez les données d'entraînement dans la mémoire GPU
             memcpy(nn->layers[0]->activations->m, x, 28 * 28 * minibatch_size * sizeof(double));
             forward(nn, sigmoid, &gpu_mem);
             memcpy(out->m, y, 10 * minibatch_size * sizeof(double));            

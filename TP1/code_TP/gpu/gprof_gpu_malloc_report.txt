@@ -1,0 +1,438 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 32.96      1.77     1.77    18745     0.09     0.09  matrix_minus(matrix_t*, matrix_t*, matrix_t*)
+ 27.75      3.26     1.49    14996     0.10     0.10  matrix_scalar(matrix_t*, double, matrix_t*)
+ 16.39      4.14     0.88     4997     0.18     0.18  populate_minibatch(double*, double*, unsigned int*, unsigned int, unsigned char (*) [784], unsigned int, unsigned char*, unsigned int)
+ 14.53      4.92     0.78    11247     0.07     0.07  matrix_transpose(matrix_t*, matrix_t*)
+  1.30      4.99     0.07     9994     0.01     0.01  matrix_sum(matrix_t*, matrix_t*, matrix_t*)
+  0.74      5.03     0.04    38733     0.00     0.00  matrix_dot(matrix_t*, matrix_t*, matrix_t*, double*, double*, double*)
+  0.74      5.07     0.04    17492     0.00     0.00  matrix_function(matrix_t*, double (*)(double), matrix_t*)
+  0.74      5.11     0.04     4997     0.01     0.04  forward(ann_t*, double (*)(double), gpu_memory_t*)
+  0.56      5.14     0.03  7996800     0.00     0.00  sigmoid(double)
+  0.56      5.17     0.03    38733     0.00     0.00  cudaError cudaLaunchKernel<char>(char const*, dim3, dim3, void**, unsigned long, CUstream_st*)
+  0.56      5.20     0.03     7498     0.00     0.00  hadamard_product(matrix_t*, matrix_t*, matrix_t*)
+  0.37      5.22     0.02                             cudart::driverHelper::memcpyDispatch(void*, void const*, unsigned long, cudaMemcpyKind, bool)
+  0.37      5.24     0.02                             cudart::getCudartError(cudaError_enum)
+  0.37      5.26     0.02                             cudart::getGlobalState()
+  0.37      5.28     0.02                             cudart::contextStateManager::getRuntimeContextState(cudart::contextState**, bool)
+  0.37      5.30     0.02                             cudaMemcpy
+  0.19      5.31     0.01  2399360     0.00     0.00  dsigmoid(double)
+  0.19      5.32     0.01    38733     0.00     0.00  computeMatrixMulGPU(double*, double*, double*, int, int, int, int)
+  0.19      5.33     0.01    38733     0.00     0.00  __device_stub__Z19computeMatrixMulGPUPdS_S_iiii(double*, double*, double*, int, int, int, int)
+  0.19      5.34     0.01     3749     0.00     1.11  backward(ann_t*, matrix_t*, double (*)(double), gpu_memory_t*)
+  0.19      5.35     0.01                             cudart::contextState::prepareToLaunchFunction(CUfunc_st**, cudart::configData const*, void const*)
+  0.19      5.36     0.01                             cudart::cudaApiMemcpy(void*, void const*, unsigned long, cudaMemcpyKind)
+  0.19      5.37     0.01                             main
+  0.00      5.37     0.00    74986     0.00     0.00  alloc_matrix(unsigned int, unsigned int)
+  0.00      5.37     0.00    74971     0.00     0.00  destroy_matrix(matrix_t*)
+  0.00      5.37     0.00    38733     0.00     0.00  dim3::dim3(unsigned int, unsigned int, unsigned int)
+  0.00      5.37     0.00    23820     0.00     0.00  normalRand(double, double)
+  0.00      5.37     0.00    23820     0.00     0.00  __gnu_cxx::__enable_if<std::__is_integer<unsigned int>::__value, double>::__type std::sqrt<unsigned int>(unsigned int)
+  0.00      5.37     0.00        4     0.00     0.00  make_uint32(unsigned char*)
+  0.00      5.37     0.00        3     0.00     0.00  create_layer(unsigned int, unsigned int, unsigned int, unsigned int)
+  0.00      5.37     0.00        3     0.00     0.00  zero_to_n(unsigned int, unsigned int*)
+  0.00      5.37     0.00        2     0.00     0.00  init_weight(matrix_t*, unsigned int)
+  0.00      5.37     0.00        2     0.00     0.00  read_images(char const*, unsigned int*)
+  0.00      5.37     0.00        2     0.00     0.00  read_labels(char const*, unsigned int*)
+  0.00      5.37     0.00        2     0.00   135.13  accuracy(unsigned char (*) [784], unsigned char*, unsigned int, unsigned int, ann_t*, gpu_memory_t*)
+  0.00      5.37     0.00        1     0.00     0.00  create_ann(double, unsigned int, unsigned int, unsigned int*)
+  0.00      5.37     0.00        1     0.00     0.00  free_gpu_memory(gpu_memory_t*)
+  0.00      5.37     0.00        1     0.00     0.00  init_gpu_memory(gpu_memory_t*)
+  0.00      5.37     0.00        1     0.00     0.00  shuffle(unsigned int*, unsigned int, unsigned int)
+  0.00      5.37     0.00        1     0.00     0.00  ____nv_dummy_param_ref(void*)
+  0.00      5.37     0.00        1     0.00     0.00  ____nv_dummy_param_ref(void*)
+  0.00      5.37     0.00        1     0.00     0.00  ____nv_dummy_param_ref(void*)
+  0.00      5.37     0.00        1     0.00     0.00  ____nv_dummy_param_ref(void*)
+  0.00      5.37     0.00        1     0.00     0.00  __sti____cudaRegisterAll()
+  0.00      5.37     0.00        1     0.00     0.00  __sti____cudaRegisterAll()
+  0.00      5.37     0.00        1     0.00     0.00  __sti____cudaRegisterAll()
+  0.00      5.37     0.00        1     0.00     0.00  __sti____cudaRegisterAll()
+  0.00      5.37     0.00        1     0.00     0.00  __nv_cudaEntityRegisterCallback(void**)
+  0.00      5.37     0.00        1     0.00     0.00  __nv_cudaEntityRegisterCallback(void**)
+  0.00      5.37     0.00        1     0.00     0.00  __nv_cudaEntityRegisterCallback(void**)
+  0.00      5.37     0.00        1     0.00     0.00  __nv_cudaEntityRegisterCallback(void**)
+  0.00      5.37     0.00        1     0.00     0.00  __nv_save_fatbinhandle_for_managed_rt(void**)
+  0.00      5.37     0.00        1     0.00     0.00  __nv_save_fatbinhandle_for_managed_rt(void**)
+  0.00      5.37     0.00        1     0.00     0.00  __nv_save_fatbinhandle_for_managed_rt(void**)
+  0.00      5.37     0.00        1     0.00     0.00  __nv_save_fatbinhandle_for_managed_rt(void**)
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 4 byte(s) for 0.19% of 5.37 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     97.8    0.01    5.24                 main [1]
+                0.01    4.15    3749/3749        backward(ann_t*, matrix_t*, double (*)(double), gpu_memory_t*) [2]
+                0.66    0.00    3749/4997        populate_minibatch(double*, double*, unsigned int*, unsigned int, unsigned char (*) [784], unsigned int, unsigned char*, unsigned int) [5]
+                0.00    0.27       2/2           accuracy(unsigned char (*) [784], unsigned char*, unsigned int, unsigned int, ann_t*, gpu_memory_t*) [7]
+                0.03    0.12    3749/4997        forward(ann_t*, double (*)(double), gpu_memory_t*) [8]
+                0.00    0.00       2/2           read_images(char const*, unsigned int*) [323]
+                0.00    0.00       2/2           read_labels(char const*, unsigned int*) [324]
+                0.00    0.00       1/1           init_gpu_memory(gpu_memory_t*) [327]
+                0.00    0.00       1/1           create_ann(double, unsigned int, unsigned int, unsigned int*) [325]
+                0.00    0.00       1/74986       alloc_matrix(unsigned int, unsigned int) [314]
+                0.00    0.00       1/1           shuffle(unsigned int*, unsigned int, unsigned int) [328]
+                0.00    0.00       1/1           free_gpu_memory(gpu_memory_t*) [326]
+                0.00    0.00       1/74971       destroy_matrix(matrix_t*) [315]
+-----------------------------------------------
+                0.01    4.15    3749/3749        main [1]
+[2]     77.4    0.01    4.15    3749         backward(ann_t*, matrix_t*, double (*)(double), gpu_memory_t*) [2]
+                1.77    0.00   18745/18745       matrix_minus(matrix_t*, matrix_t*, matrix_t*) [3]
+                1.49    0.00   14996/14996       matrix_scalar(matrix_t*, double, matrix_t*) [4]
+                0.78    0.00   11247/11247       matrix_transpose(matrix_t*, matrix_t*) [6]
+                0.02    0.02   18745/38733       matrix_dot(matrix_t*, matrix_t*, matrix_t*, double*, double*, double*) [9]
+                0.02    0.02    7498/17492       matrix_function(matrix_t*, double (*)(double), matrix_t*) [10]
+                0.03    0.00    7498/7498        hadamard_product(matrix_t*, matrix_t*, matrix_t*) [16]
+                0.00    0.00   44988/74986       alloc_matrix(unsigned int, unsigned int) [314]
+                0.00    0.00   44988/74971       destroy_matrix(matrix_t*) [315]
+-----------------------------------------------
+                1.77    0.00   18745/18745       backward(ann_t*, matrix_t*, double (*)(double), gpu_memory_t*) [2]
+[3]     33.0    1.77    0.00   18745         matrix_minus(matrix_t*, matrix_t*, matrix_t*) [3]
+-----------------------------------------------
+                1.49    0.00   14996/14996       backward(ann_t*, matrix_t*, double (*)(double), gpu_memory_t*) [2]
+[4]     27.7    1.49    0.00   14996         matrix_scalar(matrix_t*, double, matrix_t*) [4]
+-----------------------------------------------
+                0.22    0.00    1248/4997        accuracy(unsigned char (*) [784], unsigned char*, unsigned int, unsigned int, ann_t*, gpu_memory_t*) [7]
+                0.66    0.00    3749/4997        main [1]
+[5]     16.4    0.88    0.00    4997         populate_minibatch(double*, double*, unsigned int*, unsigned int, unsigned char (*) [784], unsigned int, unsigned char*, unsigned int) [5]
+-----------------------------------------------
+                0.78    0.00   11247/11247       backward(ann_t*, matrix_t*, double (*)(double), gpu_memory_t*) [2]
+[6]     14.5    0.78    0.00   11247         matrix_transpose(matrix_t*, matrix_t*) [6]
+-----------------------------------------------
+                0.00    0.27       2/2           main [1]
+[7]      5.0    0.00    0.27       2         accuracy(unsigned char (*) [784], unsigned char*, unsigned int, unsigned int, ann_t*, gpu_memory_t*) [7]
+                0.22    0.00    1248/4997        populate_minibatch(double*, double*, unsigned int*, unsigned int, unsigned char (*) [784], unsigned int, unsigned char*, unsigned int) [5]
+                0.01    0.04    1248/4997        forward(ann_t*, double (*)(double), gpu_memory_t*) [8]
+                0.00    0.00       2/3           zero_to_n(unsigned int, unsigned int*) [321]
+-----------------------------------------------
+                0.01    0.04    1248/4997        accuracy(unsigned char (*) [784], unsigned char*, unsigned int, unsigned int, ann_t*, gpu_memory_t*) [7]
+                0.03    0.12    3749/4997        main [1]
+[8]      3.8    0.04    0.16    4997         forward(ann_t*, double (*)(double), gpu_memory_t*) [8]
+                0.07    0.00    9994/9994        matrix_sum(matrix_t*, matrix_t*, matrix_t*) [11]
+                0.02    0.03   19988/38733       matrix_dot(matrix_t*, matrix_t*, matrix_t*, double*, double*, double*) [9]
+                0.02    0.02    9994/17492       matrix_function(matrix_t*, double (*)(double), matrix_t*) [10]
+                0.00    0.00   29982/74986       alloc_matrix(unsigned int, unsigned int) [314]
+                0.00    0.00   29982/74971       destroy_matrix(matrix_t*) [315]
+-----------------------------------------------
+                0.02    0.02   18745/38733       backward(ann_t*, matrix_t*, double (*)(double), gpu_memory_t*) [2]
+                0.02    0.03   19988/38733       forward(ann_t*, double (*)(double), gpu_memory_t*) [8]
+[9]      1.7    0.04    0.05   38733         matrix_dot(matrix_t*, matrix_t*, matrix_t*, double*, double*, double*) [9]
+                0.01    0.04   38733/38733       computeMatrixMulGPU(double*, double*, double*, int, int, int, int) [12]
+                0.00    0.00   38733/38733       dim3::dim3(unsigned int, unsigned int, unsigned int) [316]
+-----------------------------------------------
+                0.02    0.02    7498/17492       backward(ann_t*, matrix_t*, double (*)(double), gpu_memory_t*) [2]
+                0.02    0.02    9994/17492       forward(ann_t*, double (*)(double), gpu_memory_t*) [8]
+[10]     1.5    0.04    0.04   17492         matrix_function(matrix_t*, double (*)(double), matrix_t*) [10]
+                0.01    0.02 2399360/2399360     dsigmoid(double) [17]
+                0.01    0.00 3198080/7996800     sigmoid(double) [14]
+-----------------------------------------------
+                0.07    0.00    9994/9994        forward(ann_t*, double (*)(double), gpu_memory_t*) [8]
+[11]     1.3    0.07    0.00    9994         matrix_sum(matrix_t*, matrix_t*, matrix_t*) [11]
+-----------------------------------------------
+                0.01    0.04   38733/38733       matrix_dot(matrix_t*, matrix_t*, matrix_t*, double*, double*, double*) [9]
+[12]     0.9    0.01    0.04   38733         computeMatrixMulGPU(double*, double*, double*, int, int, int, int) [12]
+                0.01    0.03   38733/38733       __device_stub__Z19computeMatrixMulGPUPdS_S_iiii(double*, double*, double*, int, int, int, int) [13]
+-----------------------------------------------
+                0.01    0.03   38733/38733       computeMatrixMulGPU(double*, double*, double*, int, int, int, int) [12]
+[13]     0.7    0.01    0.03   38733         __device_stub__Z19computeMatrixMulGPUPdS_S_iiii(double*, double*, double*, int, int, int, int) [13]
+                0.03    0.00   38733/38733       cudaError cudaLaunchKernel<char>(char const*, dim3, dim3, void**, unsigned long, CUstream_st*) [15]
+-----------------------------------------------
+                0.01    0.00 3198080/7996800     matrix_function(matrix_t*, double (*)(double), matrix_t*) [10]
+                0.02    0.00 4798720/7996800     dsigmoid(double) [17]
+[14]     0.6    0.03    0.00 7996800         sigmoid(double) [14]
+-----------------------------------------------
+                0.03    0.00   38733/38733       __device_stub__Z19computeMatrixMulGPUPdS_S_iiii(double*, double*, double*, int, int, int, int) [13]
+[15]     0.6    0.03    0.00   38733         cudaError cudaLaunchKernel<char>(char const*, dim3, dim3, void**, unsigned long, CUstream_st*) [15]
+-----------------------------------------------
+                0.03    0.00    7498/7498        backward(ann_t*, matrix_t*, double (*)(double), gpu_memory_t*) [2]
+[16]     0.6    0.03    0.00    7498         hadamard_product(matrix_t*, matrix_t*, matrix_t*) [16]
+-----------------------------------------------
+                0.01    0.02 2399360/2399360     matrix_function(matrix_t*, double (*)(double), matrix_t*) [10]
+[17]     0.5    0.01    0.02 2399360         dsigmoid(double) [17]
+                0.02    0.00 4798720/7996800     sigmoid(double) [14]
+-----------------------------------------------
+                                                 <spontaneous>
+[18]     0.4    0.02    0.00                 cudaMemcpy [18]
+-----------------------------------------------
+                                                 <spontaneous>
+[19]     0.4    0.02    0.00                 cudart::driverHelper::memcpyDispatch(void*, void const*, unsigned long, cudaMemcpyKind, bool) [19]
+-----------------------------------------------
+                                                 <spontaneous>
+[20]     0.4    0.02    0.00                 cudart::getCudartError(cudaError_enum) [20]
+-----------------------------------------------
+                                                 <spontaneous>
+[21]     0.4    0.02    0.00                 cudart::getGlobalState() [21]
+-----------------------------------------------
+                                                 <spontaneous>
+[22]     0.4    0.02    0.00                 cudart::contextStateManager::getRuntimeContextState(cudart::contextState**, bool) [22]
+-----------------------------------------------
+                                                 <spontaneous>
+[23]     0.2    0.01    0.00                 cudart::contextState::prepareToLaunchFunction(CUfunc_st**, cudart::configData const*, void const*) [23]
+-----------------------------------------------
+                                                 <spontaneous>
+[24]     0.2    0.01    0.00                 cudart::cudaApiMemcpy(void*, void const*, unsigned long, cudaMemcpyKind) [24]
+-----------------------------------------------
+                0.00    0.00       1/74986       main [1]
+                0.00    0.00      15/74986       create_layer(unsigned int, unsigned int, unsigned int, unsigned int) [320]
+                0.00    0.00   29982/74986       forward(ann_t*, double (*)(double), gpu_memory_t*) [8]
+                0.00    0.00   44988/74986       backward(ann_t*, matrix_t*, double (*)(double), gpu_memory_t*) [2]
+[314]    0.0    0.00    0.00   74986         alloc_matrix(unsigned int, unsigned int) [314]
+-----------------------------------------------
+                0.00    0.00       1/74971       main [1]
+                0.00    0.00   29982/74971       forward(ann_t*, double (*)(double), gpu_memory_t*) [8]
+                0.00    0.00   44988/74971       backward(ann_t*, matrix_t*, double (*)(double), gpu_memory_t*) [2]
+[315]    0.0    0.00    0.00   74971         destroy_matrix(matrix_t*) [315]
+-----------------------------------------------
+                0.00    0.00   38733/38733       matrix_dot(matrix_t*, matrix_t*, matrix_t*, double*, double*, double*) [9]
+[316]    0.0    0.00    0.00   38733         dim3::dim3(unsigned int, unsigned int, unsigned int) [316]
+-----------------------------------------------
+                0.00    0.00   23820/23820       init_weight(matrix_t*, unsigned int) [322]
+[317]    0.0    0.00    0.00   23820         normalRand(double, double) [317]
+-----------------------------------------------
+                0.00    0.00   23820/23820       init_weight(matrix_t*, unsigned int) [322]
+[318]    0.0    0.00    0.00   23820         __gnu_cxx::__enable_if<std::__is_integer<unsigned int>::__value, double>::__type std::sqrt<unsigned int>(unsigned int) [318]
+-----------------------------------------------
+                0.00    0.00       2/4           read_labels(char const*, unsigned int*) [324]
+                0.00    0.00       2/4           read_images(char const*, unsigned int*) [323]
+[319]    0.0    0.00    0.00       4         make_uint32(unsigned char*) [319]
+-----------------------------------------------
+                0.00    0.00       3/3           create_ann(double, unsigned int, unsigned int, unsigned int*) [325]
+[320]    0.0    0.00    0.00       3         create_layer(unsigned int, unsigned int, unsigned int, unsigned int) [320]
+                0.00    0.00      15/74986       alloc_matrix(unsigned int, unsigned int) [314]
+                0.00    0.00       2/2           init_weight(matrix_t*, unsigned int) [322]
+-----------------------------------------------
+                0.00    0.00       1/3           shuffle(unsigned int*, unsigned int, unsigned int) [328]
+                0.00    0.00       2/3           accuracy(unsigned char (*) [784], unsigned char*, unsigned int, unsigned int, ann_t*, gpu_memory_t*) [7]
+[321]    0.0    0.00    0.00       3         zero_to_n(unsigned int, unsigned int*) [321]
+-----------------------------------------------
+                0.00    0.00       2/2           create_layer(unsigned int, unsigned int, unsigned int, unsigned int) [320]
+[322]    0.0    0.00    0.00       2         init_weight(matrix_t*, unsigned int) [322]
+                0.00    0.00   23820/23820       __gnu_cxx::__enable_if<std::__is_integer<unsigned int>::__value, double>::__type std::sqrt<unsigned int>(unsigned int) [318]
+                0.00    0.00   23820/23820       normalRand(double, double) [317]
+-----------------------------------------------
+                0.00    0.00       2/2           main [1]
+[323]    0.0    0.00    0.00       2         read_images(char const*, unsigned int*) [323]
+                0.00    0.00       2/4           make_uint32(unsigned char*) [319]
+-----------------------------------------------
+                0.00    0.00       2/2           main [1]
+[324]    0.0    0.00    0.00       2         read_labels(char const*, unsigned int*) [324]
+                0.00    0.00       2/4           make_uint32(unsigned char*) [319]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[325]    0.0    0.00    0.00       1         create_ann(double, unsigned int, unsigned int, unsigned int*) [325]
+                0.00    0.00       3/3           create_layer(unsigned int, unsigned int, unsigned int, unsigned int) [320]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[326]    0.0    0.00    0.00       1         free_gpu_memory(gpu_memory_t*) [326]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[327]    0.0    0.00    0.00       1         init_gpu_memory(gpu_memory_t*) [327]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[328]    0.0    0.00    0.00       1         shuffle(unsigned int*, unsigned int, unsigned int) [328]
+                0.00    0.00       1/3           zero_to_n(unsigned int, unsigned int*) [321]
+-----------------------------------------------
+                0.00    0.00       1/1           __cudaUnregisterBinaryUtil() [351]
+[329]    0.0    0.00    0.00       1         ____nv_dummy_param_ref(void*) [329]
+-----------------------------------------------
+                0.00    0.00       1/1           __cudaUnregisterBinaryUtil() [352]
+[330]    0.0    0.00    0.00       1         ____nv_dummy_param_ref(void*) [330]
+-----------------------------------------------
+                0.00    0.00       1/1           __cudaUnregisterBinaryUtil() [353]
+[331]    0.0    0.00    0.00       1         ____nv_dummy_param_ref(void*) [331]
+-----------------------------------------------
+                0.00    0.00       1/1           __cudaUnregisterBinaryUtil() [354]
+[332]    0.0    0.00    0.00       1         ____nv_dummy_param_ref(void*) [332]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [1335]
+[333]    0.0    0.00    0.00       1         __sti____cudaRegisterAll() [333]
+                0.00    0.00       1/1           __nv_cudaEntityRegisterCallback(void**) [337]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [1335]
+[334]    0.0    0.00    0.00       1         __sti____cudaRegisterAll() [334]
+                0.00    0.00       1/1           __nv_cudaEntityRegisterCallback(void**) [338]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [1335]
+[335]    0.0    0.00    0.00       1         __sti____cudaRegisterAll() [335]
+                0.00    0.00       1/1           __nv_cudaEntityRegisterCallback(void**) [339]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [1335]
+[336]    0.0    0.00    0.00       1         __sti____cudaRegisterAll() [336]
+                0.00    0.00       1/1           __nv_cudaEntityRegisterCallback(void**) [340]
+-----------------------------------------------
+                0.00    0.00       1/1           __sti____cudaRegisterAll() [333]
+[337]    0.0    0.00    0.00       1         __nv_cudaEntityRegisterCallback(void**) [337]
+                0.00    0.00       1/1           __nv_save_fatbinhandle_for_managed_rt(void**) [341]
+-----------------------------------------------
+                0.00    0.00       1/1           __sti____cudaRegisterAll() [334]
+[338]    0.0    0.00    0.00       1         __nv_cudaEntityRegisterCallback(void**) [338]
+                0.00    0.00       1/1           __nv_save_fatbinhandle_for_managed_rt(void**) [342]
+-----------------------------------------------
+                0.00    0.00       1/1           __sti____cudaRegisterAll() [335]
+[339]    0.0    0.00    0.00       1         __nv_cudaEntityRegisterCallback(void**) [339]
+                0.00    0.00       1/1           __nv_save_fatbinhandle_for_managed_rt(void**) [343]
+-----------------------------------------------
+                0.00    0.00       1/1           __sti____cudaRegisterAll() [336]
+[340]    0.0    0.00    0.00       1         __nv_cudaEntityRegisterCallback(void**) [340]
+                0.00    0.00       1/1           __nv_save_fatbinhandle_for_managed_rt(void**) [344]
+-----------------------------------------------
+                0.00    0.00       1/1           __nv_cudaEntityRegisterCallback(void**) [337]
+[341]    0.0    0.00    0.00       1         __nv_save_fatbinhandle_for_managed_rt(void**) [341]
+-----------------------------------------------
+                0.00    0.00       1/1           __nv_cudaEntityRegisterCallback(void**) [338]
+[342]    0.0    0.00    0.00       1         __nv_save_fatbinhandle_for_managed_rt(void**) [342]
+-----------------------------------------------
+                0.00    0.00       1/1           __nv_cudaEntityRegisterCallback(void**) [339]
+[343]    0.0    0.00    0.00       1         __nv_save_fatbinhandle_for_managed_rt(void**) [343]
+-----------------------------------------------
+                0.00    0.00       1/1           __nv_cudaEntityRegisterCallback(void**) [340]
+[344]    0.0    0.00    0.00       1         __nv_save_fatbinhandle_for_managed_rt(void**) [344]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+ [325] create_ann(double, unsigned int, unsigned int, unsigned int*) [5] populate_minibatch(double*, double*, unsigned int*, unsigned int, unsigned char (*) [784], unsigned int, unsigned char*, unsigned int) [338] __nv_cudaEntityRegisterCallback(void**)
+   [9] matrix_dot(matrix_t*, matrix_t*, matrix_t*, double*, double*, double*) [12] computeMatrixMulGPU(double*, double*, double*, int, int, int, int) [339] __nv_cudaEntityRegisterCallback(void**)
+  [11] matrix_sum(matrix_t*, matrix_t*, matrix_t*) [13] __device_stub__Z19computeMatrixMulGPUPdS_S_iiii(double*, double*, double*, int, int, int, int) [340] __nv_cudaEntityRegisterCallback(void**)
+ [317] normalRand(double, double) [8] forward(ann_t*, double (*)(double), gpu_memory_t*) [341] __nv_save_fatbinhandle_for_managed_rt(void**)
+ [322] init_weight(matrix_t*, unsigned int) [328] shuffle(unsigned int*, unsigned int, unsigned int) [342] __nv_save_fatbinhandle_for_managed_rt(void**)
+ [319] make_uint32(unsigned char*) [14] sigmoid(double)  [343] __nv_save_fatbinhandle_for_managed_rt(void**)
+ [323] read_images(char const*, unsigned int*) [7] accuracy(unsigned char (*) [784], unsigned char*, unsigned int, unsigned int, ann_t*, gpu_memory_t*) [344] __nv_save_fatbinhandle_for_managed_rt(void**)
+ [324] read_labels(char const*, unsigned int*) [2] backward(ann_t*, matrix_t*, double (*)(double), gpu_memory_t*) [316] dim3::dim3(unsigned int, unsigned int, unsigned int)
+ [314] alloc_matrix(unsigned int, unsigned int) [17] dsigmoid(double) [23] cudart::contextState::prepareToLaunchFunction(CUfunc_st**, cudart::configData const*, void const*)
+ [320] create_layer(unsigned int, unsigned int, unsigned int, unsigned int) [321] zero_to_n(unsigned int, unsigned int*) [19] cudart::driverHelper::memcpyDispatch(void*, void const*, unsigned long, cudaMemcpyKind, bool)
+   [3] matrix_minus(matrix_t*, matrix_t*, matrix_t*) [329] ____nv_dummy_param_ref(void*) [24] cudart::cudaApiMemcpy(void*, void const*, unsigned long, cudaMemcpyKind)
+   [4] matrix_scalar(matrix_t*, double, matrix_t*) [330] ____nv_dummy_param_ref(void*) [20] cudart::getCudartError(cudaError_enum)
+ [315] destroy_matrix(matrix_t*) [331] ____nv_dummy_param_ref(void*) [21] cudart::getGlobalState()
+ [326] free_gpu_memory(gpu_memory_t*) [332] ____nv_dummy_param_ref(void*) [22] cudart::contextStateManager::getRuntimeContextState(cudart::contextState**, bool)
+ [327] init_gpu_memory(gpu_memory_t*) [333] __sti____cudaRegisterAll() [318] __gnu_cxx::__enable_if<std::__is_integer<unsigned int>::__value, double>::__type std::sqrt<unsigned int>(unsigned int)
+  [10] matrix_function(matrix_t*, double (*)(double), matrix_t*) [334] __sti____cudaRegisterAll() [18] cudaMemcpy
+  [15] cudaError cudaLaunchKernel<char>(char const*, dim3, dim3, void**, unsigned long, CUstream_st*) [335] __sti____cudaRegisterAll() [1] main
+  [16] hadamard_product(matrix_t*, matrix_t*, matrix_t*) [336] __sti____cudaRegisterAll()
+   [6] matrix_transpose(matrix_t*, matrix_t*) [337] __nv_cudaEntityRegisterCallback(void**)
